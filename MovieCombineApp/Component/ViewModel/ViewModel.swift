@@ -24,6 +24,7 @@ class ViewModel{
             .receive(on: RunLoop.main)
             .debounce(for: .seconds(0.5), scheduler: RunLoop.main)
             .sink { (_) in
+                
                 self.fetchMovies()
             }.store(in: &cancellables)
     }
@@ -31,6 +32,7 @@ class ViewModel{
     
     func fetchMovies() {
         serviceProvider.fetchFilms(for: keyWordSearch) { (results) in
+            
               guard self.diffableDataSource != nil else { return }
               
               self.snapshot.deleteAllItems()

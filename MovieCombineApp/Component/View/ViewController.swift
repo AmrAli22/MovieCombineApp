@@ -23,6 +23,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         registerCell()
+        setupObservers()
     }
 }
 
@@ -35,11 +36,10 @@ extension ViewController {
 }
 
 //MARK: - UISearchBar Delegate
-extension ViewController: UISearchBarDelegate
-{
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String)
-    {
+extension ViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String){
         self.keyStroke = searchText
+        
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -51,6 +51,7 @@ extension ViewController: UISearchBarDelegate
 extension ViewController {
     func setupObservers(){
          // MONITOR search bar textfield keystrokes
+        
          $keyStroke
              .receive(on: RunLoop.main)
              .sink { (keyWordValue) in
@@ -61,8 +62,7 @@ extension ViewController {
          // DIFFABLE DS
          viewModel.diffableDataSource = MoviesTableViewDiffableDataSource(tableView: tableView) { (tableView, indexPath, model) -> UITableViewCell? in
              
-             guard
-                 let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.reuseIdentifier, for: indexPath) as? MovieCell
+             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.reuseIdentifier, for: indexPath) as? MovieCell
              else { return UITableViewCell() }
              
              cell.movieObject = model
